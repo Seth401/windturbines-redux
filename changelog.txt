@@ -1,0 +1,30 @@
+0.18.11
+- After re-measuring the length of the blades, your engineers have come to the conclusion that it's safe to build the turbines 3 tiles closer to each other.
+- You lost some weight and can now fit between a (squeak-through) solar panel and a wind turbine
+
+0.17.10
+- Slightly de-randomized the wind speeds and removed hard caps
+
+0.17.9
+- Removed 2 debug messages
+
+0.17.8
+- Fixed top and base not blending seamlessly
+
+0.17.7
+- The mod now randomizes the surface's wind speeds between 0.011 and 0.035 (before it was locked on 0.02)
+- The wind speed determines the animation speed and power output (up to 52% more power than declared, but might also produce 52% less power)
+- Added a startup-setting to make the wind- and animation speed not affect power output
+
+0.17.5
+- Fixed an error when a wind turbine got script-removed
+- Improved performance with huge wind parks
+
+0.17.4
+- Hidden some of the entities from the map view
+
+0.17.3
+- Added some safety checks to prevent crashes
+
+0.17.2
+- Made all sub-entities indestructible to prevent crashes with "fire department"

@@ -32,19 +32,11 @@ script.on_configuration_changed(function()
 	if global.version <3 then
 		for a,b in pairs(global.turbines) do
 			if b.base and b.base.valid then
-				--local turbine = b.base.surface.find_entity("ownly_wind_turbine_mk"..b.level.."_"..b.orientation, {b.base.position.x,b.base.position.y-10})
-				--local shadow =  b.base.surface.find_entity("ownly_wind_turbine_shadow_"..b.orientation, {b.base.position.x+6,b.base.position.y-1})
-				--turbine.destroy()
-				--shadow.destroy()
-		        --
-				--b.turbine = b.base.surface.create_entity{name = "ownly_wind_turbine_mk"..b.level.."_16", position = {b.base.position.x,b.base.position.y-10}, force =b.base.force}
-				--b.shadow = b.base.surface.create_entity{name = "ownly_wind_turbine_shadow_16", position = {b.base.position.x+6,b.base.position.y-1}, force =b.base.force}
 				--game.print(b.turbine.name)
 				b.turbine = rendering.draw_animation{animation =  "ownly_wind_turbine_mk"..b.level.."_"..b.orientation, target= {b.base.position.x,b.base.position.y-10}, surface = b.base.surface,animation_speed =b.base.surface.wind_speed*WIND_SPEED_MULT}
 				b.shadow =  rendering.draw_animation{animation = "ownly_wind_turbine_shadow_"..b.orientation, target= {b.base.position.x+6,b.base.position.y-1}, surface = b.base.surface,animation_speed =b.base.surface.wind_speed*WIND_SPEED_MULT}
 				b.last_change = game.tick
 				b.last_speed = b.base.surface.wind_speed*WIND_SPEED_MULT
-				--b.last_offset = 0
 				b.creation_tick = game.tick
 				b.last_frame_count = 0
 				b.last_offset = 0
@@ -68,8 +60,7 @@ script.on_configuration_changed(function()
 		end
 	end
 end)
-			
-			
+
 function entity_built(event)
     local entity = event.created_entity or event.entity
 	if not turbine_names[entity.name] then return end
@@ -82,20 +73,12 @@ function entity_built(event)
 	entity.destroy()
 	new_entity = surface.create_entity{name = "ownly_wind_turbine_mk"..level, position = position, force = force}
 	
-	--turbine = surface.create_entity{name = "ownly_wind_turbine_mk"..level.."_16", position = {position.x,position.y-10}, force = force}
-	--shadow = surface.create_entity{name = "ownly_wind_turbine_shadow_16", position = {position.x+6,position.y-1}, force = force}
 	collision_box = surface.create_entity{name = "ownly_wind_turbine_collision_box_mk"..level, position = {position.x+0,position.y-0}, force = force}
-	--turbine.destructible = false
-	--turbine.minable = false
 	collision_box.destructible = false
 	collision_box.minable = false
-	--shadow.destructible = false
-	--shadow.minable = false
 	
 	global.turbines[new_entity.unit_number] = {
 		base = new_entity, 
-		--turbine = turbine, 
-		--shadow = shadow,
 		collision_box = collision_box,
 		surface = surface.name, 
 		orientation = 16, 
@@ -132,7 +115,6 @@ script.on_event(defines.events.on_entity_died, function(event)
     local entity = event.entity
 	if not turbine_names[entity.name] or not global.turbines[entity.unit_number] then return end
 	destroy_turbine(entity.unit_number, true)
-
 end)
 
 script.on_nth_tick(290, function(event)
@@ -150,7 +132,6 @@ script.on_nth_tick(2, function(event)
 			wind_orientations[a] = 0
 		end
 		wind_orientations[a] = (wind_orientations[a] + 16) %31
-
 		wind_speeds[a] = b.wind_speed
 	end
 	
@@ -171,10 +152,10 @@ script.on_nth_tick(2, function(event)
 					local surface = turbine.base.surface
 					local level = turbine.level
 					local orientation = wind_orientations[turbine.surface]
-
+					
 					rendering.set_animation(turbine.turbine, "ownly_wind_turbine_mk"..level.."_"..orientation)
 					rendering.set_animation(turbine.shadow, "ownly_wind_turbine_shadow_"..orientation)
-
+					
 					turbine.orientation = orientation
 				end
 				local current_wind_speed = wind_speeds[turbine.base.surface.name]*WIND_SPEED_MULT
@@ -199,7 +180,6 @@ script.on_nth_tick(2, function(event)
 						turbine.base.power_production  = 750000/60*2^(turbine.level-1)*(current_wind_speed/0.457)
 					end
 				end
-
 			end
 			
 		end
@@ -212,6 +192,7 @@ script.on_nth_tick(2, function(event)
 		end
 	end
 end)
+
 function round(number)
 	if number %1 >=0.5 then
 		number = math.ceil(number)
@@ -220,6 +201,7 @@ function round(number)
 	end
 	return number
 end
+
 function validate_turbine(unit_number)
 	local turbine = global.turbines[unit_number]
 	if not turbine
@@ -227,17 +209,12 @@ function validate_turbine(unit_number)
 	or not turbine.base.valid 
 	or not turbine.collision_box 
 	or not turbine.collision_box.valid 
-	--or not turbine.shadow 
-	--or not turbine.shadow.valid 
-	--or not turbine.turbine 
-	--or not turbine.turbine.valid 
 	then
 		return false
 	end
 	return true
 end
 function destroy_turbine(unit_number, died)
---game.print(unit_number)
 	if not global.turbines[unit_number] then return end
 	if died then
 		if global.turbines[unit_number].base and global.turbines[unit_number].base.valid then
@@ -258,5 +235,3 @@ function destroy_turbine(unit_number, died)
 	global.turbines[unit_number]=nil
 
 end
---
---

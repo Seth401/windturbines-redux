@@ -17,28 +17,27 @@ for i=0,31 do
 			type = "animation",
 			name = "ownly_wind_turbine_shadow_"..i,
 			
-					filename = "__windturbines-redux__/graphics/LD/shadows/"..math.floor(rota)..".png",
-					width = 400,
-					height = 200,
-					frame_count = 24,
-					line_length = 5,
-					shift = BLADES_SHADOW_OFFSET,
-					scale = 2,
-					animation_speed = 1,
-					draw_as_shadow = true,
-					scale = 4,
-					hr_version =
-					{
-						filename = "__windturbines-redux__/graphics/HD/shadows/"..math.floor(rota)..".png",
-						width = 800,
-						height = 400,
-						frame_count = 24,
-						line_length = 5,
-						shift = BLADES_SHADOW_OFFSET,
-						scale = 2,
-						animation_speed = 1,
-						draw_as_shadow = true,
-					}
+			filename = "__windturbines-redux__/graphics/LD/shadows/"..math.floor(rota)..".png",
+			width = 400,
+			height = 200,
+			frame_count = 24,
+			line_length = 5,
+			shift = BLADES_SHADOW_OFFSET,
+			animation_speed = 1,
+			draw_as_shadow = true,
+			scale = 4,
+			hr_version =
+			{
+				filename = "__windturbines-redux__/graphics/HD/shadows/"..math.floor(rota)..".png",
+				width = 800,
+				height = 400,
+				frame_count = 24,
+				line_length = 5,
+				shift = BLADES_SHADOW_OFFSET,
+				scale = 2,
+				animation_speed = 1,
+				draw_as_shadow = true,
+			}
 		}
 	})
 end
@@ -48,26 +47,19 @@ for level=1,3 do
 		{
 			type = "simple-entity-with-force",
 			name = "ownly_wind_turbine_collision_box_mk"..level,
-			render_layer = "object",
 			icon = "__base__/graphics/icons/steel-chest.png",
 			icon_size = 32,
 			flags = {"placeable-neutral", "player-creation", "not-on-map"},
 			order = "s-e-w-f",
-			--minable = {mining_time = 0.1, result = "simple-entity-with-force"},
-			--placeable_by = {item = "ownly_wind_turbine_mk"..level, count = 1},
 			max_health = 500,
 			corpse = "small-remnants",
 			collision_box = {{-16.5, -16.5}, {16.5, 16.5}},
-			--map_color = {r = 0, g = 0.365, b = 0.58, a = 0.1},
 			collision_mask = {"resource-layer"},
 			selection_box = {{-0.9, -0.9}, {0.9, 0.9}},
 			selectable_in_game = false,
-			--fast_replaceable_group = "turbine_blades",
-			--collision_mask = {},
 			render_layer = "wires-above",
 			random_animation_offset = false,
-			picture = 
-				{
+			picture = {
 					filename = "__windturbines-redux__/graphics/transparent32.png",
 					width = 32,
 					height = 32,
@@ -80,33 +72,29 @@ for level=1,3 do
 		if settings.startup["ownly_windturbines_low_vram"].value then
 			rota = math.floor(i/2)*2
 		end
-	
+
 		data:extend({
 			{
 				type = "animation",
 				name = "ownly_wind_turbine_mk"..level.."_"..i,
-
-						filename = "__windturbines-redux__/graphics/LD/mk"..level.."/"..math.floor(rota)..".png",
-						width = 300,
-						height = 400,
-						frame_count = 24,
-						line_length = 6,
-						shift = BLADES_OFFSET,
-						animation_speed = 1,
-						scale = 2,
-						hr_version = {
-							filename = "__windturbines-redux__/graphics/HD/mk"..level.."/"..math.floor(rota)..".png",
-							width = 600,
-							height = 800,
-							frame_count = 24,
-							line_length = 6,
-							shift = BLADES_OFFSET,
-							animation_speed = 1,
-							--scale = 2,
-						}
+				filename = "__windturbines-redux__/graphics/LD/mk"..level.."/"..math.floor(rota)..".png",
+				width = 300,
+				height = 400,
+				frame_count = 24,
+				line_length = 6,
+				shift = BLADES_OFFSET,
+				animation_speed = 1,
+				scale = 2,
+				hr_version = {
+					filename = "__windturbines-redux__/graphics/HD/mk"..level.."/"..math.floor(rota)..".png",
+					width = 600,
+					height = 800,
+					frame_count = 24,
+					line_length = 6,
+					shift = BLADES_OFFSET,
+					animation_speed = 1,
+				}
 			},
-			
-			
 		})
 	end
 	data:extend({
@@ -120,7 +108,6 @@ for level=1,3 do
 			minable = {mining_time = 0.5, result = "ownly_wind_turbine_mk"..level},
 			max_health = 500,
 			corpse = "medium-remnants",
-			--render_layer = "wires-above",
 			effectivity = 1,
 			resistances = {
 				{
@@ -131,7 +118,6 @@ for level=1,3 do
 			collision_box = COLLISION_BOX,
 			selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 			collision_mask = {"resource-layer","object-layer", "player-layer", "water-tile"},
-			
 			energy_source = {
 				type = "electric",
 				usage_priority = "primary-output",
@@ -169,7 +155,6 @@ for level=1,3 do
 					height = 200,
 					frame_count = 24,
 					line_length = 5,
-					scale = 2,
 					shift = SHADOW_OFFSET,
 					animation_speed = 0.4,
 					draw_as_shadow = true,
@@ -186,10 +171,9 @@ for level=1,3 do
 						draw_as_shadow = true,
 						--scale = 2,
 					}
-
 				}
 			}},
-				
+			
 			random_animation_offset = false,
 			working_sound = {
 				sound = {
@@ -198,7 +182,7 @@ for level=1,3 do
 				},
 				match_speed_to_activity = true,
 			},
-			min_perceived_performance = 0.25,			
+			min_perceived_performance = 0.25,
 		},
 		{
 			type = "electric-energy-interface",
@@ -211,7 +195,6 @@ for level=1,3 do
 			placeable_by = {item = "ownly_wind_turbine_mk"..level, count = 1},
 			max_health = 500,
 			corpse = "big-remnants",
-			--render_layer = "wires-above",
 			effectivity = 1,
 			resistances = {
 				{
@@ -232,8 +215,7 @@ for level=1,3 do
 			},
 			energy_production = 2^(level-1)*750 .."kW",
 			energy_usage = "0kW",
-			picture = 
-				{
+			picture = {
 					filename = "__windturbines-redux__/graphics/LD/mk"..level.."/base.png",
 					width = 300,
 					height = 400,
@@ -250,7 +232,6 @@ for level=1,3 do
 						line_length = 1,
 						shift = MAIN_OFFSET,
 						animation_speed = 0.4,
-						--scale = 2,
 					}
 				},
 				
@@ -264,6 +245,5 @@ for level=1,3 do
 			},
 			min_perceived_performance = 0.25,			
 		},
-
 	})
 end

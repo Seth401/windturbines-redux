@@ -1,6 +1,6 @@
 WIND_SPEED_MULT = 22
 
-turbine_names = {
+TURBINE_NAMES = {
 	["ownly_wind_turbine_build_mk1"] = 1,
 	["ownly_wind_turbine_build_mk2"] = 2,
 	["ownly_wind_turbine_build_mk3"] = 3,
@@ -65,10 +65,10 @@ script.on_configuration_changed(function()
 	end
 end)
 
-function entity_built(event)
+function Entity_Built(event)
 	local entity = event.created_entity or event.entity
 	
-	if not turbine_names[entity.name] then
+	if not TURBINE_NAMES[entity.name] then
 		return 
 	end
 
@@ -76,11 +76,11 @@ function entity_built(event)
 	local position = entity.position
 	local force = entity.force
 	local surface = entity.surface
-	local level = turbine_names[entity.name]
+	local level = TURBINE_NAMES[entity.name]
 	entity.destroy()
-	new_entity = surface.create_entity { name = "ownly_wind_turbine_mk" .. level, position = position, force = force }
+	local new_entity = surface.create_entity { name = "ownly_wind_turbine_mk" .. level, position = position, force = force }
 	
-	collision_box = surface.create_entity { name = "ownly_wind_turbine_collision_box_mk" .. level,
+	local collision_box = surface.create_entity { name = "ownly_wind_turbine_collision_box_mk" .. level,
 		position = { position.x + 0, position.y - 0 }, force = force }
 	collision_box.destructible = false
 	collision_box.minable = false
@@ -107,25 +107,25 @@ function entity_built(event)
 	--check_turbine_surroundings()
 end
 
-function entity_removed(event)
+function Entity_Removed(event)
 	local entity = event.entity
-	if not turbine_names[entity.name] or not global.turbines[entity.unit_number] then return end
-	destroy_turbine(entity.unit_number)
+	if not TURBINE_NAMES[entity.name] or not global.turbines[entity.unit_number] then return end
+	Destroy_Turbine(entity.unit_number)
 end
 
-script.on_event(defines.events.on_built_entity, entity_built)
-script.on_event(defines.events.on_robot_built_entity, entity_built)
-script.on_event(defines.events.script_raised_revive, entity_built)
+script.on_event(defines.events.on_built_entity, Entity_Built)
+script.on_event(defines.events.on_robot_built_entity, Entity_Built)
+script.on_event(defines.events.script_raised_revive, Entity_Built)
 
-script.on_event(defines.events.on_player_mined_entity, entity_removed)
-script.on_event(defines.events.on_entity_died, entity_removed)
-script.on_event(defines.events.on_robot_mined_entity, entity_removed)
+script.on_event(defines.events.on_player_mined_entity, Entity_Removed)
+script.on_event(defines.events.on_entity_died, Entity_Removed)
+script.on_event(defines.events.on_robot_mined_entity, Entity_Removed)
 
 script.on_event(defines.events.on_entity_died, function(event)
-	if script_kill then return end
+	if SCRIPT_KILL then return end
 	local entity = event.entity
-	if not turbine_names[entity.name] or not global.turbines[entity.unit_number] then return end
-	destroy_turbine(entity.unit_number, true)
+	if not TURBINE_NAMES[entity.name] or not global.turbines[entity.unit_number] then return end
+	Destroy_Turbine(entity.unit_number, true)
 end)
 
 script.on_nth_tick(290, function(event)
@@ -155,7 +155,7 @@ script.on_nth_tick(2, function(event)
 		end
 		local remove_entry
 		if global.iterate then
-			if not validate_turbine(global.iterate) then
+			if not Validate_Turbine(global.iterate) then
 				remove_entry = global.iterate
 			else
 				local turbine = global.turbines[global.iterate]
@@ -178,7 +178,7 @@ script.on_nth_tick(2, function(event)
 					local new_frame = (((game.tick * current_wind_speed)) % 24)
 					--game.print("new frame w/o offset: "..new_frame)
 
-					new_offset = (expected_frame - new_frame) % 24
+					local new_offset = (expected_frame - new_frame) % 24
 					--game.print("new offset: "..new_offset)
 					--game.print(string.rep("-",game.tick%80))
 					rendering.set_animation_speed(turbine.turbine, current_wind_speed)
@@ -199,12 +199,12 @@ script.on_nth_tick(2, function(event)
 			global.iterate = next(global.turbines, global.iterate)
 		end
 		if remove_entry then
-			destroy_turbine(remove_entry, true)
+			Destroy_Turbine(remove_entry, true)
 		end
 	end
 end)
 
-function round(number)
+function Round(number)
 	if number % 1 >= 0.5 then
 		number = math.ceil(number)
 	else
@@ -213,7 +213,7 @@ function round(number)
 	return number
 end
 
-function validate_turbine(unit_number)
+function Validate_Turbine(unit_number)
 	local turbine = global.turbines[unit_number]
 	if not turbine
 		or not turbine.base
@@ -226,13 +226,13 @@ function validate_turbine(unit_number)
 	return true
 end
 
-function destroy_turbine(unit_number, died)
+function Destroy_Turbine(unit_number, died)
 	if not global.turbines[unit_number] then return end
 	if died then
 		if global.turbines[unit_number].base and global.turbines[unit_number].base.valid then
-			script_kill = true
+			SCRIPT_KILL = true
 			global.turbines[unit_number].base.die(global.turbines[unit_number].base.force)
-			script_kill = nil
+			SCRIPT_KILL = nil
 		end
 	elseif global.turbines[unit_number].base then
 		global.turbines[unit_number].base.destroy()

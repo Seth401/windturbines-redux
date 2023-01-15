@@ -5,16 +5,18 @@ BLADES_OFFSET = { 0.15, -1 }
 BLADES_SHADOW_OFFSET = { 9.5, 2.4 }
 BLADES_SHADOW_OFFSET = { 3.5, -2.6 }
 
+-- create 32 rotations for the shadow
 for i = 0, 31 do
-	local rota = i
+	local rotation = i
 	if settings.startup["ownly_windturbines_low_vram"].value then
-		rota = math.floor(i / 2) * 2
+		rotation = math.floor(i / 2) * 2
 	end
+	
 	data:extend({
 		{
 			type = "animation",
 			name = "ownly_wind_turbine_shadow_" .. i,
-			filename = "__windturbines-redux__/graphics/LD/shadows/" .. math.floor(rota) .. ".png",
+			filename = "__windturbines-redux__/graphics/LD/shadows/" .. math.floor(rotation) .. ".png",
 			width = 400,
 			height = 200,
 			frame_count = 24,
@@ -25,7 +27,7 @@ for i = 0, 31 do
 			scale = 4,
 			hr_version =
 			{
-				filename = "__windturbines-redux__/graphics/HD/shadows/" .. math.floor(rota) .. ".png",
+				filename = "__windturbines-redux__/graphics/HD/shadows/" .. math.floor(rotation) .. ".png",
 				width = 800,
 				height = 400,
 				frame_count = 24,
@@ -39,6 +41,7 @@ for i = 0, 31 do
 	})
 end
 
+-- create 3 levels of turbines
 for level = 1, 3 do
 	data:extend({
 		{
@@ -63,6 +66,8 @@ for level = 1, 3 do
 			},
 		}
 	})
+	
+	-- create 32 rotations for each wind turbine
 	for i = 0, 31 do
 		local rota = i
 		if settings.startup["ownly_windturbines_low_vram"].value then
@@ -168,7 +173,7 @@ for level = 1, 3 do
 					}
 				}
 			} },
-
+			
 			random_animation_offset = false,
 			working_sound = {
 				sound = {
@@ -229,7 +234,7 @@ for level = 1, 3 do
 					animation_speed = 0.4,
 				}
 			},
-
+			
 			random_animation_offset = false,
 			working_sound = {
 				sound = {

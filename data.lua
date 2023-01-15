@@ -4,7 +4,7 @@ data:extend({
 	{
 		type = "item",
 		name = "ownly_wind_turbine_mk"..level,
-		icon = "__windturbines__/graphics/mk"..level.."_icon.png",
+		icon = "__windturbines-redux__/graphics/mk"..level.."_icon.png",
 		icon_size = 144,
 		group = "logistics",
 		subgroup = "energy",
@@ -29,7 +29,7 @@ data:extend({
 	{
 		type = "technology",
 		name = "ownly_wind_turbine_mk"..level,
-		icon = "__windturbines__/graphics/mk"..level.."_icon.png",
+		icon = "__windturbines-redux__/graphics/mk"..level.."_icon.png",
 		icon_size = 144,
 		prerequisites = {"logistic-science-pack","plastics"},
 		effects = {
@@ -51,7 +51,7 @@ data:extend({
 	{
 		type = "item",
 		name = "ownly_wind_turbine_mk"..level,
-		icon = "__windturbines__/graphics/mk"..level.."_icon.png",
+		icon = "__windturbines-redux__/graphics/mk"..level.."_icon.png",
 		icon_size = 144,
 		group = "logistics",
 		subgroup = "energy",
@@ -74,7 +74,7 @@ data:extend({
 	{
 		type = "technology",
 		name = "ownly_wind_turbine_mk"..level,
-		icon = "__windturbines__/graphics/mk"..level.."_icon.png",
+		icon = "__windturbines-redux__/graphics/mk"..level.."_icon.png",
 		icon_size = 144,
 		prerequisites = {"ownly_wind_turbine_mk1", "electric-engine", "electric-energy-distribution-1"},
 		effects = {
@@ -96,7 +96,7 @@ data:extend({
 	{
 		type = "item",
 		name = "ownly_wind_turbine_mk"..level,
-		icon = "__windturbines__/graphics/mk"..level.."_icon.png",
+		icon = "__windturbines-redux__/graphics/mk"..level.."_icon.png",
 		icon_size = 144,
 		group = "logistics",
 		subgroup = "energy",
@@ -119,7 +119,7 @@ data:extend({
 	{
 		type = "technology",
 		name = "ownly_wind_turbine_mk"..level,
-		icon = "__windturbines__/graphics/mk"..level.."_icon.png",
+		icon = "__windturbines-redux__/graphics/mk"..level.."_icon.png",
 		icon_size = 144,
 		prerequisites = {"ownly_wind_turbine_mk2", "low-density-structure","utility-science-pack"},
 		effects = {

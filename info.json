@@ -1,11 +1,11 @@
 {
-    "name": "windturbines",
+    "name": "windturbines-redux",
     "version": "0.18.11",
     "title": "Wind Turbines",
     "author": "OwnlyMe",
     "contact": "",
     "homepage": "",
-    "factorio_version": "0.18",
+    "factorio_version": "1.1",
     "dependencies": ["base >= 0.18"],
     "description": "Animated wind turbines that turn into wind direction"
 }

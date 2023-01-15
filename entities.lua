@@ -17,7 +17,7 @@ for i=0,31 do
 			type = "animation",
 			name = "ownly_wind_turbine_shadow_"..i,
 			
-					filename = "__windturbines__/graphics/LD/shadows/"..math.floor(rota)..".png",
+					filename = "__windturbines-redux__/graphics/LD/shadows/"..math.floor(rota)..".png",
 					width = 400,
 					height = 200,
 					frame_count = 24,
@@ -29,7 +29,7 @@ for i=0,31 do
 					scale = 4,
 					hr_version =
 					{
-						filename = "__windturbines__/graphics/HD/shadows/"..math.floor(rota)..".png",
+						filename = "__windturbines-redux__/graphics/HD/shadows/"..math.floor(rota)..".png",
 						width = 800,
 						height = 400,
 						frame_count = 24,
@@ -68,7 +68,7 @@ for level=1,3 do
 			random_animation_offset = false,
 			picture = 
 				{
-					filename = "__windturbines__/graphics/transparent32.png",
+					filename = "__windturbines-redux__/graphics/transparent32.png",
 					width = 32,
 					height = 32,
 					
@@ -86,7 +86,7 @@ for level=1,3 do
 				type = "animation",
 				name = "ownly_wind_turbine_mk"..level.."_"..i,
 
-						filename = "__windturbines__/graphics/LD/mk"..level.."/"..math.floor(rota)..".png",
+						filename = "__windturbines-redux__/graphics/LD/mk"..level.."/"..math.floor(rota)..".png",
 						width = 300,
 						height = 400,
 						frame_count = 24,
@@ -95,7 +95,7 @@ for level=1,3 do
 						animation_speed = 1,
 						scale = 2,
 						hr_version = {
-							filename = "__windturbines__/graphics/HD/mk"..level.."/"..math.floor(rota)..".png",
+							filename = "__windturbines-redux__/graphics/HD/mk"..level.."/"..math.floor(rota)..".png",
 							width = 600,
 							height = 800,
 							frame_count = 24,
@@ -113,7 +113,7 @@ for level=1,3 do
 		{
 			type = "electric-energy-interface",
 			name = "ownly_wind_turbine_build_mk"..level,
-			icon = "__windturbines__/graphics/mk"..level.."_icon.png",
+			icon = "__windturbines-redux__/graphics/mk"..level.."_icon.png",
 			icon_size = 144,
 			order = "a",
 			flags = {"placeable-neutral","player-creation"},
@@ -144,7 +144,7 @@ for level=1,3 do
 			energy_usage = "0kW",
 			animations = {layers = {
 				{
-					filename = "__windturbines__/graphics/LD/mk"..level.."/build_dummy.png",
+					filename = "__windturbines-redux__/graphics/LD/mk"..level.."/build_dummy.png",
 					width = 300,
 					height = 400,
 					frame_count = 24,
@@ -153,7 +153,7 @@ for level=1,3 do
 					animation_speed = 0.4,
 					scale = 2,
 					hr_version = {
-						filename = "__windturbines__/graphics/HD/mk"..level.."/build_dummy.png",
+						filename = "__windturbines-redux__/graphics/HD/mk"..level.."/build_dummy.png",
 						width = 600,
 						height = 800,
 						frame_count = 24,
@@ -164,7 +164,7 @@ for level=1,3 do
 					}
 				},
 				{
-					filename = "__windturbines__/graphics/LD/shadows/16.png",
+					filename = "__windturbines-redux__/graphics/LD/shadows/16.png",
 					width = 400,
 					height = 200,
 					frame_count = 24,
@@ -175,7 +175,7 @@ for level=1,3 do
 					draw_as_shadow = true,
 					scale = 4,
 					hr_version = {
-						filename = "__windturbines__/graphics/HD/shadows/16.png",
+						filename = "__windturbines-redux__/graphics/HD/shadows/16.png",
 						width = 800,
 						height = 400,
 						frame_count = 24,
@@ -203,7 +203,7 @@ for level=1,3 do
 		{
 			type = "electric-energy-interface",
 			name = "ownly_wind_turbine_mk"..level,
-			icon = "__windturbines__/graphics/mk"..level.."_icon.png",
+			icon = "__windturbines-redux__/graphics/mk"..level.."_icon.png",
 			icon_size = 144,
 			order = "a",
 			flags = {"placeable-neutral","player-creation"},
@@ -234,7 +234,7 @@ for level=1,3 do
 			energy_usage = "0kW",
 			picture = 
 				{
-					filename = "__windturbines__/graphics/LD/mk"..level.."/base.png",
+					filename = "__windturbines-redux__/graphics/LD/mk"..level.."/base.png",
 					width = 300,
 					height = 400,
 					frame_count = 1,
@@ -243,7 +243,7 @@ for level=1,3 do
 					animation_speed = 0.4,
 					scale = 2,
 					hr_version = {
-						filename = "__windturbines__/graphics/HD/mk"..level.."/base.png",
+						filename = "__windturbines-redux__/graphics/HD/mk"..level.."/base.png",
 						width = 600,
 						height = 800,
 						frame_count = 1,

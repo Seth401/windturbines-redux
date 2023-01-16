@@ -1,6 +1,6 @@
-WIND_SPEED_MULT = 22
+local windSpeedMultiplier = 22
 
-TURBINE_NAMES = {
+local turbineNames = {
 	["ownly_wind_turbine_build_mk1"] = 1,
 	["ownly_wind_turbine_build_mk2"] = 2,
 	["ownly_wind_turbine_build_mk3"] = 3,
@@ -9,12 +9,12 @@ TURBINE_NAMES = {
 	["ownly_wind_turbine_mk3"] = 3,
 }
 
-function onInit()
+local function onInit()
 	global.turbines = {}
 	global.version = 4
 end
 
-function onConfigurationChanged()
+local function onConfigurationChanged()
 	if not global.version then
 		global.version = 1
 		for _, turbine in pairs(global.turbines) do
@@ -35,12 +35,12 @@ function onConfigurationChanged()
 			if turbine.base and turbine.base.valid then
 				turbine.turbine = rendering.draw_animation { animation = "ownly_wind_turbine_mk" .. turbine.level .. "_" .. turbine.orientation,
 					target = { turbine.base.position.x, turbine.base.position.y - 10 }, surface = turbine.base.surface,
-					animation_speed = turbine.base.surface.wind_speed * WIND_SPEED_MULT }
+					animation_speed = turbine.base.surface.wind_speed * windSpeedMultiplier }
 				turbine.shadow = rendering.draw_animation { animation = "ownly_wind_turbine_shadow_" .. turbine.orientation,
 					target = { turbine.base.position.x + 6, turbine.base.position.y - 1 }, surface = turbine.base.surface,
-					animation_speed = turbine.base.surface.wind_speed * WIND_SPEED_MULT }
+					animation_speed = turbine.base.surface.wind_speed * windSpeedMultiplier }
 				turbine.last_change = game.tick
-				turbine.last_speed = turbine.base.surface.wind_speed * WIND_SPEED_MULT
+				turbine.last_speed = turbine.base.surface.wind_speed * windSpeedMultiplier
 				turbine.creation_tick = game.tick
 				turbine.last_frame_count = 0
 				turbine.last_offset = 0
@@ -65,19 +65,59 @@ function onConfigurationChanged()
 	end
 end
 
-function eventEntityDied(event)
+local function validateTurbine(unit_number)
+	local turbine = global.turbines[unit_number]
+	
+	if not turbine
+		or not turbine.base
+		or not turbine.base.valid
+		or not turbine.collision_box
+		or not turbine.collision_box.valid
+	then
+		return false
+	end
+	
+	return true
+end
+
+local function destroyTurbine(unit_number, died)
+	if not global.turbines[unit_number] then
+		return
+	end
+	
+	if died then
+		if global.turbines[unit_number].base and global.turbines[unit_number].base.valid then
+			SCRIPT_KILL = true
+			global.turbines[unit_number].base.die(global.turbines[unit_number].base.force)
+			SCRIPT_KILL = nil
+		end
+	elseif global.turbines[unit_number].base then
+		global.turbines[unit_number].base.destroy()
+	end
+	
+	rendering.destroy(global.turbines[unit_number].turbine)
+	rendering.destroy(global.turbines[unit_number].shadow)
+	
+	if global.turbines[unit_number].collision_box then
+		global.turbines[unit_number].collision_box.destroy()
+	end
+	
+	global.turbines[unit_number] = nil
+end
+
+local function eventEntityDied(event)
 	if SCRIPT_KILL then
 		return
 	end
 	
-	if not TURBINE_NAMES[event.entity.name] or not global.turbines[event.entity.unit_number] then
+	if not turbineNames[event.entity.name] or not global.turbines[event.entity.unit_number] then
 		return
 	end
 
-	Destroy_Turbine(event.entity.unit_number, true)
+	destroyTurbine(event.entity.unit_number, true)
 end
 
-function varyWindSpeed(event)
+local function varyWindSpeed(event)
 	for _, surface in pairs(game.surfaces) do
 		-- Vary the wind speed and make sure it's never below 0.001.
 		-- Substract 0.002 from wind_speed and add 0.4% of a math.random() value to it.
@@ -86,7 +126,7 @@ function varyWindSpeed(event)
 	end
 end
 
-function updateTurbines (event)
+local function updateTurbines (event)
 	local wind_orientations = {}
 	local wind_speeds = {}
 	
@@ -114,7 +154,7 @@ function updateTurbines (event)
 		end
 		
 		if global.iterate then
-			if not Validate_Turbine(global.iterate) then
+			if not validateTurbine(global.iterate) then
 				-- We should remove this turbine as it is not valid
 				remove_entry = global.iterate
 			else
@@ -132,7 +172,7 @@ function updateTurbines (event)
 					turbine.orientation = orientation
 				end
 				
-				local current_wind_speed = wind_speeds[turbine.base.surface.name] * WIND_SPEED_MULT
+				local current_wind_speed = wind_speeds[turbine.base.surface.name] * windSpeedMultiplier
 				
 				-- If the wind speed has changed we should update the animation speed and power generation
 				if turbine.last_speed ~= current_wind_speed then
@@ -170,15 +210,15 @@ function updateTurbines (event)
 		
 		-- If it's an invalid turbine remove it
 		if remove_entry then
-			Destroy_Turbine(remove_entry, true)
+			destroyTurbine(remove_entry, true)
 		end
 	end
 end
 
-function Entity_Built(event)
+local function entityBuilt(event)
 	local entity = event.created_entity or event.entity
 	
-	if not TURBINE_NAMES[entity.name] then
+	if not turbineNames[entity.name] then
 		return
 	end
 	
@@ -186,7 +226,7 @@ function Entity_Built(event)
 	local position = entity.position
 	local force = entity.force
 	local surface = entity.surface
-	local level = TURBINE_NAMES[entity.name]
+	local level = turbineNames[entity.name]
 	entity.destroy()
 	
 	local new_entity = surface.create_entity {
@@ -212,83 +252,43 @@ function Entity_Built(event)
 		turbine = rendering.draw_animation {
 			animation = "ownly_wind_turbine_mk" .. level .. "_" .. orientation,
 			target = { position.x, position.y - 10 },
-			surface = surface, animation_speed = surface.wind_speed * WIND_SPEED_MULT,
+			surface = surface, animation_speed = surface.wind_speed * windSpeedMultiplier,
 			render_layer = "wires-above"
 		},
 		shadow = rendering.draw_animation {
 			animation = "ownly_wind_turbine_shadow_" .. orientation,
 			target = { position.x + 6, position.y - 1 },
 			surface = surface,
-			animation_speed = surface.wind_speed * WIND_SPEED_MULT
+			animation_speed = surface.wind_speed * windSpeedMultiplier
 		},
 		last_change = game.tick,
-		last_speed = surface.wind_speed * WIND_SPEED_MULT,
+		last_speed = surface.wind_speed * windSpeedMultiplier,
 		creation_tick = game.tick,
 		last_frame_count = 0,
 		last_offset = 0,
 	}
 end
 
-function Entity_Removed(event)
+local function entityRemoved(event)
 	local entity = event.entity
 	
-	if not TURBINE_NAMES[entity.name] or not global.turbines[entity.unit_number] then
+	if not turbineNames[entity.name] or not global.turbines[entity.unit_number] then
 		return
 	end
 	
-	Destroy_Turbine(entity.unit_number)
-end
-
-function Validate_Turbine(unit_number)
-	local turbine = global.turbines[unit_number]
-	
-	if not turbine
-		or not turbine.base
-		or not turbine.base.valid
-		or not turbine.collision_box
-		or not turbine.collision_box.valid
-	then
-		return false
-	end
-	
-	return true
-end
-
-function Destroy_Turbine(unit_number, died)
-	if not global.turbines[unit_number] then
-		return
-	end
-	
-	if died then
-		if global.turbines[unit_number].base and global.turbines[unit_number].base.valid then
-			SCRIPT_KILL = true
-			global.turbines[unit_number].base.die(global.turbines[unit_number].base.force)
-			SCRIPT_KILL = nil
-		end
-	elseif global.turbines[unit_number].base then
-		global.turbines[unit_number].base.destroy()
-	end
-	
-	rendering.destroy(global.turbines[unit_number].turbine)
-	rendering.destroy(global.turbines[unit_number].shadow)
-	
-	if global.turbines[unit_number].collision_box then
-		global.turbines[unit_number].collision_box.destroy()
-	end
-	
-	global.turbines[unit_number] = nil
+	destroyTurbine(entity.unit_number)
 end
 
 script.on_init(onInit)
 script.on_configuration_changed(onConfigurationChanged)
 
-script.on_event(defines.events.on_built_entity, Entity_Built)
-script.on_event(defines.events.on_robot_built_entity, Entity_Built)
-script.on_event(defines.events.script_raised_revive, Entity_Built)
+script.on_event(defines.events.on_built_entity, entityBuilt)
+script.on_event(defines.events.on_robot_built_entity, entityBuilt)
+script.on_event(defines.events.script_raised_revive, entityBuilt)
 
-script.on_event(defines.events.on_player_mined_entity, Entity_Removed)
-script.on_event(defines.events.on_entity_died, Entity_Removed)
-script.on_event(defines.events.on_robot_mined_entity, Entity_Removed)
+script.on_event(defines.events.on_player_mined_entity, entityRemoved)
+script.on_event(defines.events.on_entity_died, entityRemoved)
+script.on_event(defines.events.on_robot_mined_entity, entityRemoved)
 
 script.on_event(defines.events.on_entity_died, eventEntityDied)
 

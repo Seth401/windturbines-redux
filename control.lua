@@ -8,12 +8,13 @@ TURBINE_NAMES = {
 	["ownly_wind_turbine_mk2"] = 2,
 	["ownly_wind_turbine_mk3"] = 3,
 }
-script.on_init(function()
+
+function onInit()
 	global.turbines = {}
 	global.version = 4
-end)
+end
 
-script.on_configuration_changed(function()
+function onConfigurationChanged()
 	if not global.version then
 		global.version = 1
 		for _, turbine in pairs(global.turbines) do
@@ -62,9 +63,9 @@ script.on_configuration_changed(function()
 			end
 		end
 	end
-end)
+end
 
-script.on_event(defines.events.on_entity_died, function(event)
+function eventEntityDied(event)
 	if SCRIPT_KILL then
 		return
 	end
@@ -74,20 +75,18 @@ script.on_event(defines.events.on_entity_died, function(event)
 	end
 
 	Destroy_Turbine(event.entity.unit_number, true)
-end)
+end
 
--- every every 4.83 seconds vary wind speed on each surface
-script.on_nth_tick(290, function(event)
+function varyWindSpeed(event)
 	for _, surface in pairs(game.surfaces) do
 		-- Vary the wind speed and make sure it's never below 0.001.
 		-- Substract 0.002 from wind_speed and add 0.4% of a math.random() value to it.
 		-- Take 97.5% of this and add 0.00052.
 		surface.wind_speed = math.max(0.001, (surface.wind_speed - 0.002 + math.random() * 0.004) * 0.975 + 0.00052)
 	end
-end)
+end
 
--- Every 2/60 of a second update the animation and power generation.
-script.on_nth_tick(2, function(event)
+function updateTurbines (event)
 	local wind_orientations = {}
 	local wind_speeds = {}
 	
@@ -174,7 +173,7 @@ script.on_nth_tick(2, function(event)
 			Destroy_Turbine(remove_entry, true)
 		end
 	end
-end)
+end
 
 function Entity_Built(event)
 	local entity = event.created_entity or event.entity
@@ -280,6 +279,9 @@ function Destroy_Turbine(unit_number, died)
 	global.turbines[unit_number] = nil
 end
 
+script.on_init(onInit)
+script.on_configuration_changed(onConfigurationChanged)
+
 script.on_event(defines.events.on_built_entity, Entity_Built)
 script.on_event(defines.events.on_robot_built_entity, Entity_Built)
 script.on_event(defines.events.script_raised_revive, Entity_Built)
@@ -287,3 +289,11 @@ script.on_event(defines.events.script_raised_revive, Entity_Built)
 script.on_event(defines.events.on_player_mined_entity, Entity_Removed)
 script.on_event(defines.events.on_entity_died, Entity_Removed)
 script.on_event(defines.events.on_robot_mined_entity, Entity_Removed)
+
+script.on_event(defines.events.on_entity_died, eventEntityDied)
+
+-- every every 5 seconds vary wind speed on each surface
+script.on_nth_tick(300, varyWindSpeed)
+
+-- Every 2/60 of a second update the animation and power generation.
+script.on_nth_tick(2, updateTurbines)

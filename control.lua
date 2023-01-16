@@ -11,52 +11,11 @@ local turbineNames = {
 
 local function onInit()
 	global.turbines = {}
-	global.version = 4
 end
 
 local function onConfigurationChanged()
-	if not global.version then
-		global.version = 1
-		for _, turbine in pairs(global.turbines) do
-			turbine.collision_box.destructible = false
-			turbine.collision_box.minable = false
-			turbine.shadow.destructible = false
-			turbine.shadow.minable = false
-		end
-	end
-	if global.version == 1 then
-		for _, force in pairs(game.forces) do
-			force.rechart()
-		end
-		global.version = 2
-	end
-	if global.version < 3 then
-		for _, turbine in pairs(global.turbines) do
-			if turbine.base and turbine.base.valid then
-				turbine.turbine = rendering.draw_animation { animation = "ownly_wind_turbine_mk" .. turbine.level .. "_" .. turbine.orientation,
-					target = { turbine.base.position.x, turbine.base.position.y - 10 }, surface = turbine.base.surface,
-					animation_speed = turbine.base.surface.wind_speed * windSpeedMultiplier }
-				turbine.shadow = rendering.draw_animation { animation = "ownly_wind_turbine_shadow_" .. turbine.orientation,
-					target = { turbine.base.position.x + 6, turbine.base.position.y - 1 }, surface = turbine.base.surface,
-					animation_speed = turbine.base.surface.wind_speed * windSpeedMultiplier }
-				turbine.last_change = game.tick
-				turbine.last_speed = turbine.base.surface.wind_speed * windSpeedMultiplier
-				turbine.creation_tick = game.tick
-				turbine.last_frame_count = 0
-				turbine.last_offset = 0
-			end
-		end
-		global.version = 3
-	end
-	if global.version < 4 then
-		for _, turbine in pairs(global.turbines) do
-			if turbine.base and turbine.base.valid then
-				rendering.set_render_layer(turbine.turbine, "wires-above")
-			end
-		end
-		global.version = 4
-	end
-	if settings.startup["ownly_windturbines_locked_power"].value then
+	-- If the setting for locked power is set we need to set each placed turbine to a fixed power output
+	if settings.global["ownly_windturbines_locked_power"].value then
 		for _, turbine in pairs(global.turbines) do
 			if turbine.base and turbine.base.valid then
 				turbine.base.power_production = 750000 / 60 * 2 ^ (turbine.level - 1)
@@ -193,7 +152,7 @@ local function updateTurbines (event)
 					turbine.last_speed = current_wind_speed
 					
 					-- If we're not in locked power mode update the generated power
-					if not settings.startup["ownly_windturbines_locked_power"].value then
+					if not settings.global["ownly_windturbines_locked_power"].value then
 						turbine.base.power_production = 750000 / 60 * 2 ^ (turbine.level - 1) * (current_wind_speed / 0.457)
 					end
 				end
@@ -291,6 +250,8 @@ script.on_event(defines.events.on_entity_died, entityRemoved)
 script.on_event(defines.events.on_robot_mined_entity, entityRemoved)
 
 script.on_event(defines.events.on_entity_died, eventEntityDied)
+
+script.on_event(defines.events.on_runtime_mod_setting_changed, onConfigurationChanged)
 
 -- every every 5 seconds vary wind speed on each surface
 script.on_nth_tick(300, varyWindSpeed)

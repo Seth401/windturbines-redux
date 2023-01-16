@@ -8,7 +8,7 @@ data:extend(
             default_value = false,
         },
         {
-            setting_type = "startup",
+            setting_type = "runtime-global",
             name = "ownly_windturbines_locked_power",
             
             type = "bool-setting",

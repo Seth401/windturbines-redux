@@ -77,6 +77,11 @@ local function eventEntityDied(event)
 end
 
 local function varyWindSpeed(event)
+	if game.active_mods["WindSpeedChanging-Tweaked"] or game.active_mods["WindSpeedChanging"] or settings.global["ownly_windturbines_vary_windspeed"].value == false then
+		return
+	end
+	
+	game.print("Changing Windspeed")
 	for _, surface in pairs(game.surfaces) do
 		-- Vary the wind speed and make sure it's never below 0.001.
 		-- Substract 0.002 from wind_speed and add 0.4% of a math.random() value to it.

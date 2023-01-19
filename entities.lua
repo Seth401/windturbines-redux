@@ -5,6 +5,8 @@ BLADES_OFFSET = { 0.15, -1 }
 BLADES_SHADOW_OFFSET = { 9.5, 2.4 }
 BLADES_SHADOW_OFFSET = { 3.5, -2.6 }
 
+local basePower = 750
+
 -- create 32 rotations for the shadow
 for i = 0, 31 do
 	local rotation = i
@@ -124,11 +126,9 @@ for level = 1, 3 do
 				type = "electric",
 				usage_priority = "primary-output",
 				input_flow_limit = "0kW",
-				output_flow_limit = 2 ^ (level - 1) * 750 .. "kW",
-				buffer_capacity = 2 ^ (level - 1) * 750 .. "kJ",
 				render_no_power_icon = false
 			},
-			energy_production = 2 ^ (level - 1) * 750 .. "kW",
+			energy_production = "0kW",
 			energy_usage = "0kW",
 			animations = { layers = {
 				{
@@ -209,11 +209,9 @@ for level = 1, 3 do
 				type = "electric",
 				usage_priority = "primary-output",
 				input_flow_limit = "0kW",
-				output_flow_limit = 2 ^ (level - 1) * 750 * 2 .. "kW",
-				buffer_capacity = 2 ^ (level - 1) * 750 .. "kJ",
 				render_no_power_icon = false
 			},
-			energy_production = 2 ^ (level - 1) * 750 .. "kW",
+			energy_production = "0kW",
 			energy_usage = "0kW",
 			picture = {
 				filename = "__windturbines-redux__/graphics/LD/mk" .. level .. "/base.png",

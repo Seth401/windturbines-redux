@@ -9,16 +9,28 @@ local turbineNames = {
 	["ownly_wind_turbine_mk3"] = 3,
 }
 
+local basePower = settings.global["ownly_windturbines_base_power"].value
+
 local function onInit()
 	global.turbines = {}
 end
 
 local function onConfigurationChanged()
+	if settings.global["ownly_windturbines_base_power"].value ~= basePower then
+		basePower = settings.global["ownly_windturbines_base_power"].value
+		
+		for _, turbine in pairs(global.turbines) do
+			if turbine.base and turbine.base.valid then
+				turbine.base.electric_buffer_size = (2 ^ (turbine.level - 1) * basePower*1000)/60
+			end
+		end
+	end
+	
 	-- If the setting for locked power is set we need to set each placed turbine to a fixed power output
 	if settings.global["ownly_windturbines_locked_power"].value then
 		for _, turbine in pairs(global.turbines) do
 			if turbine.base and turbine.base.valid then
-				turbine.base.power_production = 750000 / 60 * 2 ^ (turbine.level - 1)
+				turbine.base.power_production = basePower*1000 / 60 * 2 ^ (turbine.level - 1)
 			end
 		end
 	end
@@ -81,7 +93,6 @@ local function varyWindSpeed(event)
 		return
 	end
 	
-	game.print("Changing Windspeed")
 	for _, surface in pairs(game.surfaces) do
 		-- Vary the wind speed and make sure it's never below 0.001.
 		-- Substract 0.002 from wind_speed and add 0.4% of a math.random() value to it.
@@ -158,7 +169,7 @@ local function updateTurbines (event)
 					
 					-- If we're not in locked power mode update the generated power
 					if not settings.global["ownly_windturbines_locked_power"].value then
-						turbine.base.power_production = 750000 / 60 * 2 ^ (turbine.level - 1) * (current_wind_speed / 0.457)
+						turbine.base.power_production = basePower*1000 / 60 * 2 ^ (turbine.level - 1) * (current_wind_speed / 0.457)
 					end
 				end
 			end
@@ -206,6 +217,9 @@ local function entityBuilt(event)
 	
 	collision_box.destructible = false
 	collision_box.minable = false
+	
+	new_entity.electric_buffer_size = (2 ^ (level - 1) * basePower*1000)/60
+	new_entity.power_production = basePower*1000 / 60 * 2 ^ (level - 1)
 	
 	global.turbines[new_entity.unit_number] = {
 		base = new_entity,

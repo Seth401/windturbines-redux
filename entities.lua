@@ -1,3 +1,8 @@
+local data_util = nil
+if mods["space-exploration"] then
+	data_util = require("__space-exploration__/data_util")
+end
+
 COLLISION_BOX = { { -1.2, -1.2 }, { 1.2, 1.2 } }
 SHADOW_OFFSET = { 9.5, -3.6 }
 MAIN_OFFSET = { 0.15, -11 }
@@ -244,4 +249,12 @@ for level = 1, 3 do
 			min_perceived_performance = 0.25,
 		},
 	})
+	
+	if mods["space-exploration"] then
+		table.insert(data.raw["electric-energy-interface"][( "ownly_wind_turbine_build_mk" .. level )].collision_mask, space_collision_layer)
+		data_util.collision_description(data.raw["electric-energy-interface"][( "ownly_wind_turbine_build_mk" .. level )])
+		
+		table.insert(data.raw["electric-energy-interface"][( "ownly_wind_turbine_mk" .. level )].collision_mask, space_collision_layer)
+		data_util.collision_description(data.raw["electric-energy-interface"][( "ownly_wind_turbine_mk" .. level )])
+	end
 end

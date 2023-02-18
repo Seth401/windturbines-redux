@@ -169,6 +169,10 @@ local function updateTurbines (event)
 					
 					-- If we're not in locked power mode update the generated power
 					if not settings.global["ownly_windturbines_locked_power"].value then
+						if game.active_mods["WindSpeedChanging"] then
+							current_wind_speed = current_wind_speed/10
+						end
+						
 						turbine.base.power_production = basePower*1000 / 60 * 2 ^ (turbine.level - 1) * (current_wind_speed / 0.457)
 					end
 				end

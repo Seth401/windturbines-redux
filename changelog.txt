@@ -1,30 +1,66 @@
-0.18.11
-- After re-measuring the length of the blades, your engineers have come to the conclusion that it's safe to build the turbines 3 tiles closer to each other.
-- You lost some weight and can now fit between a (squeak-through) solar panel and a wind turbine
+---------------------------------------------------------------------------------------------------
+Version: 0.19.02
+Date: 2023-02-18
+  Feature:
+    - Support for space-exploration. Wind turbines are not placeable in space.
+    - Better integration with WindSpeedChanging.
+  Minor Feature:
+    - Clear localization, remove the mention of the base power from items for now. This might return at a later date.
 
-0.17.10
-- Slightly de-randomized the wind speeds and removed hard caps
+---------------------------------------------------------------------------------------------------
+Version: 0.19.01
+Date: 2023-02-13
+  Major Feature:
+    - Updated for 1.1.
+    - Most options are runtime global rather than startup settings.
+    - Option to configure the base power of turbines.
+    - New option to enabled or disabled the mod internal variation of wind speed.
 
-0.17.9
-- Removed 2 debug messages
+---------------------------------------------------------------------------------------------------
+Version: 0.18.11
+  Features:
+    - After re-measuring the length of the blades, your engineers have come to the conclusion that it's safe to build the turbines 3 tiles closer to each other.
+    - You lost some weight and can now fit between a (squeak-through) solar panel and a wind turbine
 
-0.17.8
-- Fixed top and base not blending seamlessly
+---------------------------------------------------------------------------------------------------
+Version: 0.17.10
+  Features:
+    - Slightly de-randomized the wind speeds and removed hard caps
 
-0.17.7
-- The mod now randomizes the surface's wind speeds between 0.011 and 0.035 (before it was locked on 0.02)
-- The wind speed determines the animation speed and power output (up to 52% more power than declared, but might also produce 52% less power)
-- Added a startup-setting to make the wind- and animation speed not affect power output
+---------------------------------------------------------------------------------------------------
+Version: 0.17.9
+  Features:
+    - Removed 2 debug messages
 
-0.17.5
-- Fixed an error when a wind turbine got script-removed
-- Improved performance with huge wind parks
+---------------------------------------------------------------------------------------------------
+Version: 0.17.8
+  Features:
+    - Fixed top and base not blending seamlessly
 
-0.17.4
-- Hidden some of the entities from the map view
+---------------------------------------------------------------------------------------------------
+Version: 0.17.7
+  Features:
+    - The mod now randomizes the surface's wind speeds between 0.011 and 0.035 (before it was locked on 0.02)
+    - The wind speed determines the animation speed and power output (up to 52% more power than declared, but might also produce 52% less power)
+    - Added a startup-setting to make the wind- and animation speed not affect power output
 
-0.17.3
-- Added some safety checks to prevent crashes
+---------------------------------------------------------------------------------------------------
+Version: 0.17.5
+  Features:
+    - Fixed an error when a wind turbine got script-removed
+    - Improved performance with huge wind parks
 
-0.17.2
-- Made all sub-entities indestructible to prevent crashes with "fire department"
+---------------------------------------------------------------------------------------------------
+Version: 0.17.4
+  Features:
+    - Hidden some of the entities from the map view
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.3
+  Features:
+    - Added some safety checks to prevent crashes
+
+---------------------------------------------------------------------------------------------------
+Version: 0.17.2
+  Features:
+    - Made all sub-entities indestructible to prevent crashes with "fire department"
